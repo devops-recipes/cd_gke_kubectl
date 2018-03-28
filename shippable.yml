@@ -1,0 +1,56 @@
+resources:
+# REPO of kube configs
+  - name: config_repo
+    type: gitRepo
+    integration: "dr_github"
+    versionTemplate:
+      sourceName: "devops-recipes/cd_gke_kubectl"
+      branch: master
+
+# gcloud CLI Config
+  - name: gcloud_cli
+    type: cliConfig
+    integration: "dr_gcp"
+    versionTemplate:
+      region: "us-west1-a"
+
+# GKE cluster info
+  - name: gke_cluster
+    type: cluster
+    integration: "dr_gcp"
+    pointer:
+      sourceName: "cluster"
+      region: "us-west1-a"
+
+jobs:
+  - name: deployBEAppKctl_GKE
+    type: runSh
+    dependencyMode: strict
+    steps:
+      - IN: gcloud_cli
+      - IN: app_be_img # defined here https://github.com/devops-recipes/app_be/blob/master/shippable.yml
+      - IN: gke_cluster
+      - IN: config_repo
+        switch: off
+      - TASK:
+          name: backend_app_svc
+          script:
+            - pushd $(shipctl get_resource_state "config_repo")
+            - cd specs
+            - export BE_LABEL="kctl-be-app"
+            - export BE_IMG=$(shipctl get_resource_version_key app_be_img sourceName)
+            - export BE_TAG=$(shipctl get_resource_version_name app_be_img)
+            - shipctl replace beDeploy.yml beSvc.yml
+            - export CLUST=$(shipctl get_resource_version_key gke_cluster sourceName)
+            - export CLUST_REG=$(shipctl get_resource_version_key gke_cluster region)
+            - gcloud container clusters get-credentials $CLUST --zone $CLUST_REG
+            - kubectl delete  -f ./beDeploy.yml 2>/dev/null || echo ""
+            - kubectl delete -f ./beSvc.yml  2>/dev/null || echo ""
+            - kubectl create -o json -f ./beDeploy.yml >> kube_output.json
+            - kubectl create -o json -f ./beSvc.yml >> kube_output.json
+            - cat kube_output.json
+            - popd
+    flags:
+      - gke
+      - cd
+      - kctl

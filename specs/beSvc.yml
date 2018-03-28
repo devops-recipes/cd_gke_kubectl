@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: default
+  name: ${BE_LABEL}
+spec:
+  ports:
+  - port: 6379
+  selector:
+    app: ${BE_LABEL}
