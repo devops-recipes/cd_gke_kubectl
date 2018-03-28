@@ -2,13 +2,13 @@ resources:
 # REPO of kube configs
   - name: config_repo
     type: gitRepo
-    integration: "dr_github"
+    integration: "drship_github"
     versionTemplate:
       sourceName: "devops-recipes/cd_gke_kubectl"
       branch: master
 
 # gcloud CLI Config
-  - name: gcloud_cli
+  - name: gcp_cli
     type: cliConfig
     integration: "dr_gcp"
     versionTemplate:
@@ -27,7 +27,7 @@ jobs:
     type: runSh
     dependencyMode: strict
     steps:
-      - IN: gcloud_cli
+      - IN: gcp_cli
       - IN: app_be_img # defined here https://github.com/devops-recipes/app_be/blob/master/shippable.yml
       - IN: gke_cluster
       - IN: config_repo
