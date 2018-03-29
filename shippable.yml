@@ -27,9 +27,11 @@ jobs:
     type: runSh
     dependencyMode: strict
     steps:
-      - IN: gcp_cli
       - IN: app_be_img # defined here https://github.com/devops-recipes/app_be/blob/master/shippable.yml
+      - IN: gcp_cli
+        switch: off
       - IN: gke_cluster
+        switch: off
       - IN: config_repo
         switch: off
       - TASK:
