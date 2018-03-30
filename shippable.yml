@@ -27,7 +27,7 @@ jobs:
     type: runSh
     dependencyMode: strict
     steps:
-      - IN: app_be_img # defined here https://github.com/devops-recipes/app_be/blob/master/shippable.yml
+      - IN: node_app_img_dh # defined here https://github.com/devops-recipes/node_app/blob/master/shippable.yml
       - IN: gcp_cli
         switch: off
       - IN: gke_cluster
@@ -40,8 +40,8 @@ jobs:
             - pushd $(shipctl get_resource_state "config_repo")
             - cd specs
             - export BE_LABEL="kctl-be-app"
-            - export BE_IMG=$(shipctl get_resource_version_key app_be_img sourceName)
-            - export BE_TAG=$(shipctl get_resource_version_name app_be_img)
+            - export BE_IMG=$(shipctl get_resource_version_key node_app_img_dh sourceName)
+            - export BE_TAG=$(shipctl get_resource_version_name node_app_img_dh)
             - shipctl replace beDeploy.yml beSvc.yml
             - export CLUST=$(shipctl get_resource_version_key gke_cluster sourceName)
             - export CLUST_REG=$(shipctl get_resource_version_key gke_cluster region)
