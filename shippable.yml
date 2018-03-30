@@ -39,17 +39,17 @@ jobs:
           script:
             - pushd $(shipctl get_resource_state "config_repo")
             - cd specs
-            - export BE_LABEL="kctl-be-app"
-            - export BE_IMG=$(shipctl get_resource_version_key node_app_img_dh sourceName)
-            - export BE_TAG=$(shipctl get_resource_version_name node_app_img_dh)
-            - shipctl replace beDeploy.yml beSvc.yml
+            - export APP_LABEL="kctl-be-app"
+            - export APP_IMG=$(shipctl get_resource_version_key node_app_img_dh sourceName)
+            - export APP_TAG=$(shipctl get_resource_version_name node_app_img_dh)
+            - shipctl replace appDeploy.yml appSvc.yml
             - export CLUST=$(shipctl get_resource_version_key gke_cluster sourceName)
             - export CLUST_REG=$(shipctl get_resource_version_key gke_cluster region)
             - gcloud container clusters get-credentials $CLUST --zone $CLUST_REG
-            - kubectl delete  -f ./beDeploy.yml 2>/dev/null || echo ""
-            - kubectl delete -f ./beSvc.yml  2>/dev/null || echo ""
-            - kubectl create -o json -f ./beDeploy.yml >> kube_output.json
-            - kubectl create -o json -f ./beSvc.yml >> kube_output.json
+            - kubectl delete  -f ./appDeploy.yml 2>/dev/null || echo ""
+            - kubectl delete -f ./appSvc.yml  2>/dev/null || echo ""
+            - kubectl create -o json -f ./appDeploy.yml >> kube_output.json
+            - kubectl create -o json -f ./appSvc.yml >> kube_output.json
             - cat kube_output.json
             - popd
     flags:

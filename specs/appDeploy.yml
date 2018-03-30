@@ -2,16 +2,16 @@ apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
   namespace: default
-  name: ${BE_LABEL}
+  name: ${APP_LABEL}
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        app: ${BE_LABEL}
+        app: ${APP_LABEL}
     spec:
       containers:
-      - name: ${BE_LABEL}
-        image: ${BE_IMG}:${BE_TAG}
+      - name: ${APP_LABEL}
+        image: ${APP_IMG}:${APP_TAG}
         ports:
-        - containerPort: 6379
+        - containerPort: 80
