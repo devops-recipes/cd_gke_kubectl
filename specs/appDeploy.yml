@@ -5,6 +5,11 @@ metadata:
   name: ${APP_LABEL}
 spec:
   replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  minReadySeconds: 5
   template:
     metadata:
       labels:
@@ -15,3 +20,8 @@ spec:
         image: ${APP_IMG}:${APP_TAG}
         ports:
         - containerPort: 80
+        resources:
+          requests:
+            cpu: 250m
+          limits:
+            cpu: 500m

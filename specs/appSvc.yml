@@ -4,6 +4,7 @@ metadata:
   namespace: default
   name: ${APP_LABEL}
 spec:
+  type: LoadBalancer
   ports:
   - port: 80
   selector:
