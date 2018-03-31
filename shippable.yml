@@ -36,7 +36,6 @@ jobs:
         switch: off
       - TASK:
           name: deploy_app
-          name: prep_u16_gce_image
           runtime:
             options:
               env:
