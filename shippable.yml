@@ -39,7 +39,7 @@ jobs:
           runtime:
             options:
               env:
-                - APP_LABEL: "kctl_app"
+                - APP_LABEL: "kctl-app"
           script:
             - pushd $(shipctl get_resource_state "config_repo")
             - cd specs
