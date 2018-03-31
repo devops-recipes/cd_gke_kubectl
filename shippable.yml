@@ -23,7 +23,7 @@ resources:
       region: "us-west1-a"
 
 jobs:
-  - name: deployBEAppKctl_GKE
+  - name: deploy_app_kctl_gke
     type: runSh
     dependencyMode: strict
     steps:
@@ -35,11 +35,15 @@ jobs:
       - IN: config_repo
         switch: off
       - TASK:
-          name: backend_app_svc
+          name: deploy_app
+          name: prep_u16_gce_image
+          runtime:
+            options:
+              env:
+                - APP_LABEL: "kctl_app"
           script:
             - pushd $(shipctl get_resource_state "config_repo")
             - cd specs
-            - export APP_LABEL="kctl-be-app"
             - export APP_IMG=$(shipctl get_resource_version_key node_app_img_dh sourceName)
             - export APP_TAG=$(shipctl get_resource_version_name node_app_img_dh)
             - shipctl replace appDeploy.yml appSvc.yml
