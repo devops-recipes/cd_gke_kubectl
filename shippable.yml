@@ -2,7 +2,7 @@ resources:
 # REPO of kube configs
   - name: config_repo
     type: gitRepo
-    integration: "drship_github"
+    integration: "dr_gh"
     versionTemplate:
       sourceName: "devops-recipes/cd_gke_kubectl"
       branch: master
@@ -10,17 +10,17 @@ resources:
 # gcloud CLI Config
   - name: gcp_cli
     type: cliConfig
-    integration: "drship_gcp"
+    integration: "dr_gcp"
     versionTemplate:
-      region: "us-west1-a"
+      region: "us-east1-d"
 
 # GKE cluster info
   - name: gke_cluster
     type: cluster
-    integration: "drship_gcp"
+    integration: "dr_gcp"
     pointer:
-      sourceName: "cluster"
-      region: "us-west1-a"
+      sourceName: "test-cluster"
+      region: "us-east1-d"
 
 jobs:
   - name: deploy_app_kctl_gke
