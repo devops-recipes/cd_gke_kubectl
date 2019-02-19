@@ -14,13 +14,13 @@ resources:
     versionTemplate:
       region: "us-east1-d"
 
-# GKE cluster info
-  - name: gke_cluster
-    type: cluster
-    integration: "dr_gcp"
-    pointer:
-      sourceName: "test-cluster"
-      region: "us-east1-d"
+# # GKE cluster info
+#   - name: gke_cluster
+#     type: cluster
+#     integration: "dr_gcp"
+#     pointer:
+#       sourceName: "test-cluster"
+#       region: "us-east1-d"
 
 jobs:
   - name: deploy_app_kctl_gke
@@ -30,7 +30,7 @@ jobs:
       - IN: node_app_img_dh # defined here https://github.com/devops-recipes/node_app/blob/master/shippable.yml
       - IN: gcp_cli
         switch: off
-      - IN: gke_cluster
+      - IN: gcp_gke_cluster
         switch: off
       - IN: config_repo
         switch: off
